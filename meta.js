@@ -10,6 +10,23 @@ Meta.prototype = {
     
   },
   
+  _not: function(rule) {
+    var index = this.index;
+    var args = Array.prototype.slice.call(arguments, 1);
+    var result;
+    try{
+      result = rule.apply(this, args);
+    } catch(e) {
+      if(e instanceof ParseError){
+        this.index = index;
+        return result;
+      }
+      throw e;
+    }
+    this.index = index;
+    throw new ParseError(this.index + ': expected to not match rule: ' + rule);
+  },
+  
   _star: function(rule) {
     var ans = [];
     while(true){
@@ -36,14 +53,18 @@ Meta.prototype = {
   
   any: function() {
     if(this.index >= this.input.length){
-      throw new ParseError('unexpected end of input');
+      throw new ParseError(this.index + ': unexpected end of input');
     }
     return this.input[this.index++];
   },
   
+  spaces: function() {
+    this._plus(this.space);
+  },
+  
   space: function() {
     var any = this.any();
-    if(/^\s$/.test(any)){
+    if(/^[\s\n]$/.test(any)){
       return any;
     }
     this.index--;
@@ -62,10 +83,15 @@ Meta.prototype = {
   letter: function() {
     var chr = this.char();
     if(/\w/.test(chr)){
+      console.log(chr);
       return chr;
     }
     this.index--;
     throw new ParseError(this.index + ': expected letter, got: ' + chr);
+  },
+  
+  digit: function() {
+    
   },
   
   string: function() {
@@ -85,8 +111,25 @@ Meta.prototype = {
   },
   
   token: function() {
+    console.log('token')
     this._star(this.space);
     return this._plus(this.letter).join('');
+  },
+  
+  seq: function(seq) {
+    var self = this;
+    seq.forEach(function(item) {
+      self.identity(item);
+    });
+    return seq;
+  },
+  
+  identity: function(item) {
+    var any = this.any();
+    if(any === item){
+      return true;
+    }
+    throw new ParseError(this.index + ': expected ' + any + ' to be identical to : ' + item);
   },
   
   _apply: function(rule){
