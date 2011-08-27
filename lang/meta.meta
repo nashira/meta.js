@@ -2,5 +2,16 @@ meta meta {
   grammar = 'meta' name '{' rule+ '}',
   rule    = name '=' expr ',',
   name    = token,
-  expr    = name | string,
+  expr    = name
+          | string
+          | group
+          | seq
+          | neg
+          | plus
+          | star,
+  plus    = expr '+',
+  star    = expr '*',
+  group   = '(' expr ')',
+  seq     = expr (space+ expr)+,
+  neg     = '~' expr,
 }

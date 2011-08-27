@@ -141,6 +141,8 @@ describe("meta.js", function() {
       expect(meta._not(meta.identity, 'b')).toEqual(true);
       meta = new Meta("aab baa");
       expect(function() {meta._not(meta.identity, 'a')}).toThrow('0: expected to not match rule: "identity"');
+      expect(function() {meta._not(meta._not, meta.identity, 'a')}).not.toThrow();
+      expect(function() {meta._not(meta._not, meta.identity, 'b')}).toThrow('0: expected to not match rule: "_not"');
     });
   });
   
@@ -163,10 +165,28 @@ describe("meta.js", function() {
         function() {return this.identity('a')}
       )).toEqual('a');
       
-      // meta = new Meta("aab baa");
-      // expect(meta._lookahead(meta.identity, 'a')).toEqual(true);
-      // meta = new Meta("aab baa");
-      // expect(function() {meta._lookahead(meta.identity, 'b')}).not.toThrow();
+      meta = new Meta("aab baa");
+      expect(function() {
+        meta._or(
+          function b() {return meta.identity('b')},
+          function c() {return meta.identity('c')}
+        );
+      }).toThrow('0: expected to match one of: "b,c"');
+    });
+  });
+  
+  describe("_opt", function() {
+    it("consumes the rule if possible else undefined", function() {
+      meta = new Meta("aab baa");
+      expect(meta._opt(meta.identity, 'a')).toEqual('a');
+      
+//      meta = new Meta("aab baa");
+//      expect(function() {
+//        meta._or(
+//          function b() {return meta.identity('b')},
+//          function c() {return meta.identity('c')}
+//        );
+//      }).toThrow('0: expected to match one of: "b,c"');
     });
   });
 });
