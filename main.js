@@ -3,14 +3,22 @@ var repl = require('repl'),
     fs = require('fs');
 
 var metaGrammar = context.metaGrammar = fs.readFileSync('./lang/meta.meta').toString();
+var testGrammar = context.testGrammar = fs.readFileSync('./lang/test.meta').toString();
 var ParseError  = context.ParseError = require('./lib/parse_error.js').ParseError;
 var Meta        = context.Meta = require('./lib/meta.js').Meta;
 var MetaParser  = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
+var TestParser  = context.TestParser = require('./lib/test_parser.js').TestParser;
+var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecord;
 
-verb(MetaParser.prototype);
+//verb(MetaParser.prototype);
+//verb(MemoRecord.prototype);
 context.mp = new MetaParser(metaGrammar);
+context.tp = new TestParser(testGrammar);
 
-context.mp.grammar();
+//context.tp.grammar();
+
+//context.mp.token();
+//context.mp.letter();
 
 //verb(Meta.prototype);
 

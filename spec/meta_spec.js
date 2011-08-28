@@ -69,22 +69,22 @@ describe("meta.js", function() {
       expect(meta.letter()).toEqual('a');
       expect(function() {meta.letter()}).toThrow('1: expected char, got: "string"');
       meta.any();
-      expect(function() {meta.letter()}).toThrow('2: expected char, got: ""');
+      expect(function() {meta.letter()}).toThrow('2: expected string, got: ""');
       meta.any();
-      expect(function() {meta.letter()}).toThrow('3: expected char, got: "[object Object]"');
+      expect(function() {meta.letter()}).toThrow('3: expected string, got: "[object Object]"');
     });
   });
   
-  describe("string", function() {
+  describe("literal", function() {
     it("consumes a single quote surrounded string", function() {
       meta = new Meta("'the'");
-      expect(meta.string()).toEqual("the");
+      expect(meta.literal()).toEqual("the");
       meta = new Meta("\"quick\"");
-      expect(function() {meta.string()}).toThrow('0: expected open quote, got: """');
+      expect(function() {meta.literal()}).toThrow('0: expected open quote, got: """');
       meta = new Meta("'brown\"");
-      expect(function() {meta.string()}).toThrow('7: unexpected end of input');
+      expect(function() {meta.literal()}).toThrow('7: unexpected end of input');
       meta = new Meta("'fox\\'jumped'");
-      expect(meta.string()).toEqual("fox'jumped");
+      expect(meta.literal()).toEqual("fox'jumped");
     });
   });
   

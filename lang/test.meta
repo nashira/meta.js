@@ -1,0 +1,6 @@
+meta meta {
+  grammar = 'meta' name '{' rule+ '}',
+  rule    = name '=' expr ',',
+  name    = token,
+  expr    = name | literal | '|' | '+',
+}
