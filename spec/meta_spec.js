@@ -179,14 +179,22 @@ describe("meta.js", function() {
     it("consumes the rule if possible else undefined", function() {
       meta = new Meta("aab baa");
       expect(meta._opt(meta.identity, 'a')).toEqual('a');
+      expect(meta._opt(meta.identity, 'b')).toEqual(undefined);
+    });
+  });
+  
+  describe("_seq", function() {
+    it("consumes the list of rules in order", function() {
+      meta = new Meta("aab baa");
+      expect(meta._seq(
+        function() {return meta.identity('a')},
+        function() {return meta.identity('a')}
+      )).toEqual(['a', 'a']);
       
-//      meta = new Meta("aab baa");
-//      expect(function() {
-//        meta._or(
-//          function b() {return meta.identity('b')},
-//          function c() {return meta.identity('c')}
-//        );
-//      }).toThrow('0: expected to match one of: "b,c"');
+      expect(meta._seq(
+        function() {return meta.identity('b')},
+        function() {return meta.identity(' ')}
+      )).toEqual(['b', ' ']);
     });
   });
 });
