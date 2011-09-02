@@ -15,8 +15,11 @@ var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecor
 context.mp = new MetaParser(metaGrammar);
 context.tp = new TestParser(testGrammar);
 
-//context.tp.grammar();
-
+try {
+  context.tp.grammar();
+} catch(e) {
+  console.error(e)
+}
 //context.mp.token();
 //context.mp.letter();
 
