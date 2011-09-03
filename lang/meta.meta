@@ -3,13 +3,14 @@ meta meta {
   
   rule       = name '=' expression ',',
   
-  name       = letter (letter | digit)*,
+  name       = letter (letter | digit)* { [_1].concat(_2) },
   
   expression = choice,
   
   choice     = sequence ('|' sequence)*,
   
-  sequence   = prefixed+,
+  sequence   = prefixed+ action
+             | prefixed+,
   
   prefixed   = '&' suffixed
              | '~' suffixed
@@ -23,4 +24,6 @@ meta meta {
   primary    = name
              | literal
              | '(' expression ')',
+  
+  action     = '{' (~'}' char)* '}',
 }

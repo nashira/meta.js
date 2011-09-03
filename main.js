@@ -1,6 +1,9 @@
 var repl = require('repl'),
     context = repl.start('>').context,
-    fs = require('fs');
+    fs = require('fs'),
+    util = require('util');
+
+context.util = util;
 
 var metaGrammar = context.metaGrammar = fs.readFileSync('./lang/meta.meta').toString();
 var testGrammar = context.testGrammar = fs.readFileSync('./lang/test.meta').toString();
@@ -13,9 +16,14 @@ var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecor
 //verb(MemoRecord.prototype);
 context.mp = new MetaParser(metaGrammar);
 
-
+/*
+mp = new MetaParser(metaGrammar);
+var time = new Date().getTime();mp.grammar();console.log(new Date().getTime() - time);
+*/
 try {
+  var time = new Date().getTime();
   context.t = context.mp.grammar();
+  console.log(new Date().getTime() - time);
 } catch(e) {
   console.error(e)
 }
