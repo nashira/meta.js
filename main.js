@@ -13,9 +13,9 @@ var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecor
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
 context.mp = new MetaParser(metaGrammar);
-context.tp = new TestParser(metaGrammar);
+//context.tp = new TestParser(metaGrammar);
+context.tp = new TestParser(testGrammar);
 
-//context.tp = new TestParser('a b c');
 
 try {
   context.tp.grammar();

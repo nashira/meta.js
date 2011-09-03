@@ -1,28 +1,31 @@
 meta meta {
-  grammar   = 'meta' token '{' rule+ '}',
+  grammar   = 'meta' name '{' rule+ '}',
   
-  rule      = token '=' expr ',',
+  rule      = name '=' expr ',',
+  
+  nameEnd   = letter | digit,
+  
+  name      = letter nameEnd*,
   
   expr      = choice
             | seq
             | plus
-            | star
-            | exprLeaf,
+            | star,
             
-  exprLeaf  = token
+  exprLeaf  = name
             | literal,
   
   plus      = exprLeaf '+',
   
   star      = exprLeaf '*',
   
-  exprA     = plus
+  expr1     = plus
             | star
             | exprLeaf,
   
-  seq       = exprA+,
+  seq       = expr1+,
   
-  choiceA   = '|' exprA,
+  choice1   = '|' seq,
   
-  choice    = exprA choiceA+,
+  choice    = seq choice1+,
 }

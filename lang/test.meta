@@ -1,8 +1,11 @@
-meta meta {
-  grammar = 'meta' name '{' rule+ '}',
-  rule    = name '=' expr ',',
-  name    = token,
-  expr    = bar | plus | name | literal,
-  plus    = expr '+',
-  bar     = expr '|',
+meta calc {
+  term = term '+' fact
+       | term '-' fact
+       | fact,
+  
+  fact = fact '*' num
+       | fact '/' num
+       | num,
+  
+  num  = digit+,
 }
