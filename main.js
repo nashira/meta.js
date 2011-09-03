@@ -7,19 +7,15 @@ var testGrammar = context.testGrammar = fs.readFileSync('./lang/test.meta').toSt
 var ParseError  = context.ParseError = require('./lib/parse_error.js').ParseError;
 var Meta        = context.Meta = require('./lib/meta.js').Meta;
 var MetaParser  = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
-var TestParser  = context.TestParser = require('./lib/test_parser.js').TestParser;
 var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecord;
 
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
 context.mp = new MetaParser(metaGrammar);
-context.tp = new TestParser(metaGrammar);
-// context.tp = new TestParser(testGrammar);
 
 
 try {
-  context.t = context.tp.grammar();
-//  context.tp.foo();
+  context.t = context.mp.grammar();
 } catch(e) {
   console.error(e)
 }
