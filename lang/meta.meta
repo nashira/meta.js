@@ -3,14 +3,17 @@ meta meta {
   
   rule       = name '=' expression ',',
   
-  name       = letter (letter | digit)* { [_1].concat(_2) },
+  name       = letter:first (letter | digit)*:rest { [first].concat(rest); },
   
   expression = choice,
   
   choice     = sequence ('|' sequence)*,
   
-  sequence   = prefixed+ action
-             | prefixed+,
+  sequence   = labeled+ action
+             | labeled+,
+  
+  labeled    = prefixed ':' name
+             | prefixed,
   
   prefixed   = '&' suffixed
              | '~' suffixed
