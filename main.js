@@ -1,36 +1,34 @@
 var repl = require('repl'),
     context = repl.start('>').context,
+    // context = {},
     fs = require('fs'),
     util = require('util');
 
 context.util = util;
 
-var metaGrammar = context.metaGrammar = fs.readFileSync('./lang/meta.meta').toString();
-var testGrammar = context.testGrammar = fs.readFileSync('./lang/test.meta').toString();
-var ParseError  = context.ParseError = require('./lib/parse_error.js').ParseError;
-var Meta        = context.Meta = require('./lib/meta.js').Meta;
-var MetaParser  = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
-var MemoRecord  = context.MemoRecord = require('./lib/memo_record.js').MemoRecord;
+var metaGrammar   = context.metaGrammar = fs.readFileSync('./lang/meta.meta').toString();
+var testGrammar   = context.testGrammar = fs.readFileSync('./lang/test.meta').toString();
+var ParseError    = context.ParseError = require('./lib/parse_error.js').ParseError;
+var Meta          = context.Meta = require('./lib/meta.js').Meta;
+var MetaParser    = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
+var MemoRecord    = context.MemoRecord = require('./lib/memo_record.js').MemoRecord;
+var ParserBuilder = context.ParserBuilder = require('./lib/parser_builder.js');
 
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
 context.mp = new MetaParser(metaGrammar);
+// context.mp = new MetaParser(testGrammar);
 
-/*
-mp = new MetaParser(metaGrammar);
-var time = new Date().getTime();mp.grammar();console.log(new Date().getTime() - time);
-*/
 try {
-  var time = new Date().getTime();
+  console.time('parse');
   context.t = context.mp.grammar();
-  console.log(new Date().getTime() - time);
+  // context.P = ParserBuilder.build(context.t);
+  console.timeEnd('parse');
 } catch(e) {
-  console.error(e)
+  console.error(e.stack);
+  var index = parseInt(e.message);
+  console.log(metaGrammar.substr(index-1, 20));
 }
-//context.mp.token();
-//context.mp.letter();
-
-//verb(Meta.prototype);
 
 function verb(obj){
  var pad = '';

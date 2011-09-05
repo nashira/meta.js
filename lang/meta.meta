@@ -1,19 +1,17 @@
 meta meta {
-  grammar    = 'meta' name '{' rule+ '}',
+  grammar    = "meta" _ name _? '{' rule+ _? '}',
   
-  rule       = name '=' expression ',',
+  rule       = _? name _ '=' _ expression ',',
   
-  name       = letter:first (letter | digit)*:rest { [first].concat(rest); },
+  name       = '_' | letter (letter | digit)*,
   
   expression = choice,
   
-  choice     = sequence ('|' sequence)*,
+  choice     = sequence (_ '|' sequence)*,
   
-  sequence   = labeled+ action
-             | labeled+,
+  sequence   = labeled+ action?,
   
-  labeled    = prefixed ':' name
-             | prefixed,
+  labeled    = _? (prefixed ':' name | prefixed),
   
   prefixed   = '&' suffixed
              | '~' suffixed
@@ -26,7 +24,39 @@ meta meta {
             
   primary    = name
              | literal
-             | '(' expression ')',
+             | litseq
+             | group,
+  
+  group      = '(' expression _? ')',
   
   action     = '{' (~'}' char)* '}',
 }
+
+s = n v n
+n = adj? ('cat' | 'hat' | 'bat')
+adj = 'furry' | 'bald'
+v = 'ate' | 'wore' | 'scratched'
+
+
+(s 
+  (n
+    (adj furry) 
+    cat
+  )
+  (v ate)
+  (n bat)
+)
+
+
+cat ate hat
+cat scratched mat
+
+
+external rules:
+
+letter
+digit
+literal
+litseq
+char
+_
