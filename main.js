@@ -13,15 +13,17 @@ var Meta          = context.Meta = require('./lib/meta.js').Meta;
 var MetaParser    = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
 var MemoRecord    = context.MemoRecord = require('./lib/memo_record.js').MemoRecord;
 var ParserBuilder = context.ParserBuilder = require('./lib/parser_builder.js');
+var AST = context.AST = require('./lib/ast.js').AST;
 
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
-context.mp = new MetaParser(metaGrammar);
-// context.mp = new MetaParser(testGrammar);
+// context.mp = new MetaParser(metaGrammar);
+context.mp = new MetaParser(testGrammar);
 
 try {
   console.time('parse');
   context.t = context.mp.grammar();
+  context.a = new AST(context.t);
   // context.P = ParserBuilder.build(context.t);
   console.timeEnd('parse');
 } catch(e) {
