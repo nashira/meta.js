@@ -31,11 +31,11 @@ describe("meta.js", function() {
     });
   });
   
-  describe("spaces", function() {
+  describe("_", function() {
     it("consumes one or more spaces from the input stream", function() {
       meta = new Meta('    \n  \naaaa');
-      expect(meta.spaces()).toEqual('    \n  \n'.split(''));
-      expect(function() {meta.spaces()}).toThrow('8: expected space, got: "a"');
+      expect(meta._()).toEqual('    \n  \n'.split(''));
+      expect(function() {meta._()}).toThrow('8: expected space, got: "a"');
     });
   });
   
@@ -89,14 +89,14 @@ describe("meta.js", function() {
   });
   
   describe("token", function() {
-    it("consumes one or more letters", function() {
-      meta = new Meta('mary');
-      expect(meta.token()).toEqual('mary');
-      meta = new Meta('had a little');
-      expect(meta.token()).toEqual('had');
-      meta = new Meta("'lamb'");
-      expect(function() {meta.token()}).toThrow('0: expected letter, got: "\'"');
-    });
+    // it("consumes one or more letters", function() {
+    //   meta = new Meta('mary');
+    //   expect(meta.token()).toEqual('mary');
+    //   meta = new Meta('had a little');
+    //   expect(meta.token()).toEqual('had');
+    //   meta = new Meta("'lamb'");
+    //   expect(function() {meta.token()}).toThrow('0: expected letter, got: "\'"');
+    // });
   });
   
   describe("identity", function() {
