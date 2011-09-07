@@ -31,32 +31,3 @@ meta meta {
   
   action     = '{' (~'}' char)* '}',
 }
-
-s = n v n
-n = adj? ('cat' | 'hat' | 'bat')
-adj = 'furry' | 'bald'
-v = 'ate' | 'wore' | 'scratched'
-
-
-(s 
-  (n
-    (adj furry) 
-    cat
-  )
-  (v ate)
-  (n bat)
-)
-
-
-cat ate hat
-cat scratched mat
-
-
-external rules:
-
-letter
-digit
-literal
-litseq
-char
-_
