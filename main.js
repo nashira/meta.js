@@ -24,7 +24,7 @@ try {
   console.time('parse');
   context.t = context.mp.grammar();
   context.a = new AST(context.t);
-  // context.P = ParserBuilder.build(context.t);
+  context.P = ParserBuilder.build(context.t);
   console.timeEnd('parse');
 } catch(e) {
   console.error(e.stack);
