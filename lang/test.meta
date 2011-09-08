@@ -1,5 +1,5 @@
 meta calc {
-  term = term '+' fact
+  term = (term:foo '+':plus fact):bar
        | term '-' fact
        | fact,
   
