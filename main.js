@@ -15,6 +15,14 @@ var MemoRecord    = context.MemoRecord = require('./lib/memo_record.js').MemoRec
 var ParserBuilder = context.ParserBuilder = require('./lib/parser_builder.js');
 var AST = context.AST = require('./lib/ast.js').AST;
 
+context.ins = function(o) {
+  console.log(util.inspect(o, false, null));
+}
+
+context.str = function(p) {
+  console.log(ParserBuilder.stringify(p.prototype))
+}
+
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
 // context.mp = new MetaParser(metaGrammar);

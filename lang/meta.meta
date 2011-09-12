@@ -29,5 +29,5 @@ meta meta {
   
   group      = '(' expression _? ')',
   
-  action     = '{' (~'}' char)* '}',
+  action     = "->" (~"<-" char)* "<-",
 }
