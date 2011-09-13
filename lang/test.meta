@@ -1,12 +1,14 @@
 meta calc {
-  term = term:a '+' fact:b   -> a + b <-
-       | term:a '-' fact:b   -> a - b <-
-       | fact:a              -> a <-,
+  exec = term:a end            -> a <-,
   
-  fact = fact:a '*' num:b    -> a * b <-
-       | fact:a '/' num:b    -> a / b <-
-       | _? '(' term:a ')' _?-> a <-
-       | num:a               -> a <-,
+  term = term:a '+' fact:b     -> a + b <-
+       | term:a '-' fact:b     -> a - b <-
+       | fact:a                -> a <-,
+       
+  fact = fact:a '*' num:b      -> a * b <-
+       | fact:a '/' num:b      -> a / b <-
+       | num:a                 -> a <-,
   
-  num  = _? digit+:n _?      -> parseInt(n.join('')) <-,
+  num  = _? digit+:n _?        -> parseInt(n.join('')) <-
+       | _? '(' term:a ')' _?  -> a <-,
 }
