@@ -5,7 +5,8 @@ meta calc {
   
   fact = fact:a '*' num:b    -> a * b <-
        | fact:a '/' num:b    -> a / b <-
+       | _? '(' term:a ')' _?-> a <-
        | num:a               -> a <-,
   
-  num  = digit+:n            -> parseInt(n.join('')) <-,
+  num  = _? digit+:n _?      -> parseInt(n.join('')) <-,
 }
