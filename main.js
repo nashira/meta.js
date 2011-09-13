@@ -25,8 +25,8 @@ context.str = function(p) {
 
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
-// context.mp = new MetaParser(metaGrammar);
-context.mp = new MetaParser(testGrammar);
+context.mp = new MetaParser(metaGrammar);
+// context.mp = new MetaParser(testGrammar);
 
 try {
   console.time('parse');

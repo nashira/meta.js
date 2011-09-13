@@ -1,11 +1,11 @@
 meta calc {
-  term = term:a '+' fact:b -> a + b <-
-       | term:a '-' fact:b -> a - b <-
-       | fact:a -> a <-,
+  term = term:a '+' fact:b   -> a + b <-
+       | term:a '-' fact:b   -> a - b <-
+       | fact:a              -> a <-,
   
-  fact = fact:a '*' num:b -> a * b <-
-       | fact:a '/' num:b -> a / b <-
-       | num:a -> a <-,
+  fact = fact:a '*' num:b    -> a * b <-
+       | fact:a '/' num:b    -> a / b <-
+       | num:a               -> a <-,
   
-  num  = digit+:n -> parseInt(n.join('')) <-,
+  num  = digit+:n            -> parseInt(n.join('')) <-,
 }
