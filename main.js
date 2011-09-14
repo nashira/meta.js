@@ -7,7 +7,8 @@ var repl = require('repl'),
 context.util = util;
 
 var metaGrammar   = context.metaGrammar = fs.readFileSync('./lang/meta.meta').toString();
-var testGrammar   = context.testGrammar = fs.readFileSync('./lang/test.meta').toString();
+var calcGrammar   = context.calcGrammar = fs.readFileSync('./lang/calc.meta').toString();
+var sandGrammar   = context.sandGrammar = fs.readFileSync('./lang/sand.meta').toString();
 var ParseError    = context.ParseError = require('./lib/parse_error.js').ParseError;
 var Meta          = context.Meta = require('./lib/meta.js').Meta;
 var MetaParser    = context.MetaParser = require('./lib/meta_parser.js').MetaParser;
@@ -25,14 +26,19 @@ context.str = function(p) {
 
 //verb(MetaParser.prototype);
 //verb(MemoRecord.prototype);
-// context.mp = new MetaParser(metaGrammar);
-context.mp = new MetaParser(testGrammar);
+context.mp = new MetaParser(metaGrammar);
+// context.mp = new MetaParser(calcGrammar);
 
 try {
   console.time('parse');
   context.t = context.mp.grammar();
-  context.a = new AST(context.t);
+  console.timeEnd('parse');
+  
   context.P = ParserBuilder.build(context.t);
+  context.p = new context.P(metaGrammar);
+  
+  console.time('parse');
+  context.t = context.p.grammar();
   console.timeEnd('parse');
 } catch(e) {
   console.error(e.stack);

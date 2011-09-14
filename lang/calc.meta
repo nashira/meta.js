@@ -5,9 +5,12 @@ meta calc {
        | term:a '-' fact:b     -> a - b <-
        | fact:a                -> a <-,
        
-  fact = fact:a '*' num:b      -> a * b <-
-       | fact:a '/' num:b      -> a / b <-
-       | num:a                 -> a <-,
+  fact = fact:a '*' exp:b      -> a * b <-
+       | fact:a '/' exp:b      -> a / b <-
+       | exp:a                 -> a <-,
+       
+  exp  = exp:e '^' num:n       -> Math.pow(e, n) <-
+       | num:n                 -> n <-,
   
   num  = _? digit+:n _?        -> parseInt(n.join('')) <-
        | _? '(' term:a ')' _?  -> a <-,

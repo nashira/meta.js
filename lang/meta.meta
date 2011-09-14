@@ -1,33 +1,37 @@
 meta meta {
-  grammar    = "meta" _ name _? '{' rule+ _? '}',
+  grammar    = "meta" _ name:n _? '{' rule+:rs _? '}'             -> {name: n, rules: rs} <-,
   
-  rule       = _? name _ '=' _ expression ',',
+  rule       = _? name:n _ '=' _ expression:e ','                 -> {name: n, expr: e} <-,
   
-  name       = '_' | letter (letter | digit)*,
+  name       = '_'
+             | letter:f (letter | digit)*:r                       -> [f].concat(r).join('') <-,
   
   expression = choice,
   
-  choice     = sequence (_ '|' sequence)*,
+  choice     = sequence:f (_ '|' sequence:s ->s<-)*:r             -> r.length ? {name: 'choice', exprs: [f].concat(r)} : f <-,
   
-  sequence   = labeled+ action?,
+  sequence   = labeled+:l action?:a                               -> l.length > 1 ? {name: 'sequence', exprs: l, action: a} : ((l[0].action = a) || true) && l[0] <-,
   
-  labeled    = _? (prefixed ':' name | prefixed),
+  labeled    = _? 
+             (prefixed:p ':' name:n                               -> (p.label = n) && p <-
+             | prefixed:p                                         -> p <-
+             ):l                                                  -> l <-,
   
-  prefixed   = '&' suffixed
-             | '~' suffixed
-             | suffixed,
+  prefixed   = '&' suffixed:s                                     -> {name: 'lookahead', expr: s} <-
+             | '~' suffixed:s                                     -> {name: 'not', expr: s} <-
+             | suffixed:s                                         -> s <-,
   
-  suffixed   = primary '?'
-             | primary '+'
-             | primary '*'
-             | primary,
+  suffixed   = primary:p '?'                                      -> {name: 'optional', expr: p} <-
+             | primary:p '+'                                      -> {name: 'plus', expr: p} <-
+             | primary:p '*'                                      -> {name: 'star', expr: p} <-
+             | primary:p                                          -> p <-,
             
-  primary    = name
-             | literal
-             | litseq
-             | group,
+  primary    = name:n                                             -> {name: 'call', val: n} <-
+             | literal:l                                          -> {name: 'literal', val: l} <-
+             | litseq:l                                           -> {name: 'litseq', val: l} <-
+             | group:g                                            -> g <-,
   
-  group      = '(' expression _? ')',
+  group      = '(' _? expression:e _? ')'                         -> e <-,
   
-  action     = "->" (~"<-" char)* "<-",
+  action     = _? "->" (~"<-" char:c ->c<-)*:a "<-"               -> a.join('') <-,
 }
