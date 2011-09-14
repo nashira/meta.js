@@ -147,13 +147,11 @@ describe("meta.js", function() {
   });
   
   describe("_lookahead", function() {
-    it("returns true if the passed in rule can be applied, else returns false", function() {
+    it("returns true if the passed in rule can be applied, else throws ParseError", function() {
       meta = new Meta("aab baa");
-      expect(meta._lookahead(meta.space)).toEqual(false);
+      expect(meta._lookahead(meta.identity, 'a')).toEqual('a');
       meta = new Meta("aab baa");
-      expect(meta._lookahead(meta.identity, 'a')).toEqual(true);
-      meta = new Meta("aab baa");
-      expect(function() {meta._lookahead(meta.identity, 'b')}).not.toThrow();
+      expect(function() {meta._lookahead(meta.space)}).toThrow('0: expected space, got: "a"');
     });
   });
   
