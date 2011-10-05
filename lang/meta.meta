@@ -4,7 +4,7 @@ meta meta {
   rule       = _? name:n _ '=' _ expression:e ','                 -> {name: n, expr: e} <-,
   
   name       = '_'
-             | letter:f (letter | digit)*:r                       -> [f].concat(r).join('') <-,
+             | letter:f (letter | digit | '_')*:r                 -> [f].concat(r).join('') <-,
   
   expression = choice,
   
